@@ -48,7 +48,7 @@ const byId=id=>document.getElementById(id);
 const levelSelect=byId('level'),catSelect=byId('category'),sectionSelect=byId('section');
 let showFullWeek=false;
 function mins(t){const [h,m]=t.split(':').map(Number);return h*60+m}
-function clock(t){let n=mins(t),h=Math.floor(n/60),m=n%60;h=h%12||12;return `${h}:${String(m).padStart(2,'0')}`}
+function clock(t){let n=mins(t),h=Math.floor(n/60),m=n%60;return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`}
 function timeLabel(e){return `${clock(e.start)} – ${clock(e.end)}`}
 function details(e){const i=e.text.search(/\s(?:د\/|م\/)/);return i<0?{title:e.text,meta:''}:{title:e.text.slice(0,i).trim(),meta:e.text.slice(i).trim()}}
 function todayName(){return ['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'][new Date().getDay()]}
