@@ -21,7 +21,7 @@
 .venue-panel{margin-top:18px}.venue-panel summary{font-size:19px}.venue-intro{margin:13px 0 16px;color:var(--muted);font-size:14px;line-height:1.8}.venue-types{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.venue-type{min-height:48px;border:1px solid #cbdde4;background:#fff;color:#276175;border-radius:12px;padding:10px 14px;font: bold 15px Tahoma,Arial,sans-serif;cursor:pointer}.venue-type:hover,.venue-type[aria-pressed="true"]{background:var(--teal-light);border-color:#78c8bd;color:#08766f}.venue-picker{margin-top:16px}.venue-picker label{display:block;font-size:14px;font-weight:bold;margin:0 0 8px;color:#35566b}.venue-picker select{width:100%;height:48px;border:1px solid #d7e4e9;border-radius:12px;background:#fbfdfe;padding:0 13px;font:16px Tahoma,Arial,sans-serif;color:var(--ink)}.venue-result{margin-top:14px}.venue-card{border:1px solid #cfe9e4;background:linear-gradient(120deg,#f0fbf8,#fff);border-radius:15px;padding:16px 18px}.venue-card h3{margin:0 0 10px;font-size:19px}.venue-floor{display:inline-flex;background:#d9f2ed;color:#06796f;border-radius:999px;padding:6px 11px;font-size:13px;font-weight:bold}.venue-directions{line-height:1.9;margin:11px 0 0}.venue-map{margin-top:13px}.venue-map summary{cursor:pointer;color:#08766f;font-weight:bold}.venue-map img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:12px;margin-top:10px}.venue-missing{color:#775719;background:#fff7e6;border:1px solid #f2dfad;border-radius:12px;padding:11px 13px;line-height:1.8;margin:12px 0 0}
 @media(max-width:680px){.shell{width:min(100% - 20px,520px);margin:12px auto 28px}.hero{padding:23px 21px;border-radius:20px}.panel{padding:16px;border-radius:17px}.fields{grid-template-columns:1fr;gap:11px}.field select{height:46px}.week-grid{grid-template-columns:1fr}.event{grid-template-columns:116px 1fr;gap:10px;padding:11px}.subject{font-size:15px}.time{font-size:13px}.section-title{margin-top:21px}.section-title h2{font-size:19px}.staff-panel summary{font-size:17px}.staff-item{grid-template-columns:116px 1fr;gap:10px;padding:11px}.staff-item .time{font-size:13px}}
 @media(max-width:520px){.venue-types{grid-template-columns:1fr}.venue-type{min-height:44px}.venue-card{padding:14px}}
-</style></head>
+</style><link rel="stylesheet" href="course-planner.css"></head>
 <body><main class="shell">
 <header class="hero"><div class="eyebrow">خدمات الطلاب · جدول المحاضرات</div><h1>اعرف مواعيدك بسهولة</h1><p>اختار المستوى والمجموعة أو التخصص والسكشن، وهتلاقي مواعيد النهارده وجدول باقي الأسبوع.</p></header>
 <details class="panel staff-panel" id="staffPanel"><summary>جدول الدكاترة والمعيدين</summary><div class="staff-body">
@@ -43,6 +43,27 @@
 <div class="section-title"><h2>مواعيد اليوم</h2><small id="todayCaption"></small></div><section class="today-card" id="todayCard"></section>
 <div class="section-title"><h2 id="weekTitle">باقي الأسبوع</h2><small>مرتبة حسب وقت البداية</small></div><section class="week-grid" id="weekGrid"></section>
 <button class="toggle" id="toggleWeek" type="button">عرض الأسبوع كاملًا</button>
+<details class="panel course-panel" id="coursePanel">
+<summary>تثبيت المواد اللي هتحضرها</summary>
+<div class="course-panel-body">
+<p class="course-intro">المواد المحددة هنا هي اللي هتظهر في جدولك الشخصي. مواد اختيارك الأساسي بتبدأ محددة، وتقدر تشيل اللي مش مسجلها أو تضيف مادة من مستوى تاني وتشوف كل شعبها ومواعيدها.</p>
+<div class="course-subhead"><h3>مواد جدولك الأساسي</h3><small>اختياراتك مرتبطة بالمستوى والمجموعة أو التخصص والسكشن اللي فوق</small><button class="course-reset" id="resetCourseSettings" type="button">إعادة ضبط الاختيارات</button></div>
+<div class="course-choice-list" id="courseBaseList"></div>
+<div class="course-add-box">
+<h3>إضافة مادة من مستوى أو تخصص آخر</h3>
+<p>اختار المادة عشان تشوف المجموعات والشعب المتاحة في جدول الترم الحالي، مع المدرّس والميعاد والمكان. لكل مجموعة اختار السكشن اللي هتحضره.</p>
+<div class="fields course-fields">
+<div class="field"><label for="courseSourceLevel">المستوى</label><select id="courseSourceLevel"></select></div>
+<div class="field"><label for="courseSourceTrack">التخصص</label><select id="courseSourceTrack"></select></div>
+<div class="field"><label for="courseSourceSubject">المادة</label><select id="courseSourceSubject"></select></div>
+</div>
+<div id="courseOfferings" class="course-offerings" aria-live="polite"><div class="course-empty">اختار المستوى والمادة لعرض الشعب والمواعيد.</div></div>
+<div class="course-actions"><button class="course-add-button" id="addCourseOffering" type="button">إضافة الشعبة المختارة لجدولي</button><span class="course-feedback" id="courseFeedback" role="status" aria-live="polite"></span></div>
+<div class="course-subhead"><h3>المواد المضافة لجدولك</h3></div>
+<div class="course-added-list" id="courseAddedList"></div>
+<p class="course-save-status" id="courseSaveStatus" role="status" aria-live="polite">اختياراتك تحفظ على هذا الجهاز والمتصفح فقط.</p>
+</div>
+</details>
 <div class="footer">المواعيد مأخوذة من جدول الكلية المرفق · لو عندك نسخة أحدث من الجدول ارفعها لتحديث الموقع</div>
 </main>
 <script>
@@ -146,4 +167,4 @@ fillLevels('2');fillCategories('g:1');fillSections('3');render();
 levelSelect.addEventListener('change',()=>{fillCategories();fillSections();render()});catSelect.addEventListener('change',()=>{fillSections();render()});sectionSelect.addEventListener('change',render);byId('toggleWeek').addEventListener('click',()=>{showFullWeek=!showFullWeek;render()});
 staffRoleSelect.addEventListener('change',fillStaffNames);staffNameSelect.addEventListener('change',fillStaffSubjects);staffSubjectSelect.addEventListener('change',renderStaffSchedule);
 document.querySelectorAll('[data-venue-type]').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('[data-venue-type]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));fillVenueOptions(button.dataset.venueType)}));venueSelect.addEventListener('change',renderVenue);
-</script></body></html>
+</script><script src="course-planner.js"></script></body></html>
