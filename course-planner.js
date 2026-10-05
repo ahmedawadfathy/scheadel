@@ -291,7 +291,12 @@ function courseRenderOfferings(){
     const meetings=bundle.meetings.map(function(event){
       return '<div class="course-meeting"><div class="course-meeting-time">'+clock(event.start)+' – '+clock(event.end)+'</div><div class="course-meeting-info"><strong>'+courseHtml(event.day)+' · '+courseHtml(courseActivityTitle(event))+'</strong><small>'+courseHtml(courseFormatTeacher(event))+' · '+courseHtml(roomOf(event))+'</small></div></div>';
     }).join("");
-    return '<article class="course-offer '+(selected?"is-selected":"")+'" data-course-offer-card="'+index+'"><div class="course-offer-head"><input type="radio" name="courseOfferChoice" value="'+index+'" '+(selected?"checked":"")+'><strong>اختيار الشعبة دي</strong></div><div class="course-offer-scope"><span class="course-scope-pill">'+courseHtml(courseScopeTitle(bundle.scope))+'</span><span class="course-scope-pill">السكاشن المتاحة: '+courseHtml(sectionList(bundle.sections))+'</span></div><label class="course-offer-section">السكشن اللي هتحضره<select data-course-offer-section="'+index+'">'+sectionOptions+'</select></label><div class="course-offer-meetings">'+meetings+'</div></article>';
+    const sectionMeetings=JSON.stringify(bundle.sections.map(function(section){
+      return {section:String(section),events:courseEventsForSection(subject,level,bundle.scopeId,section).map(function(event){
+        return {day:event.day,start:event.start,end:event.end,title:courseActivityTitle(event),room:roomOf(event),section:String(event.section)};
+      })};
+    }));
+    return '<article class="course-offer '+(selected?"is-selected":"")+'" data-course-offer-card="'+index+'" data-course-offer-scope="'+courseHtml(bundle.scopeId)+'" data-course-offer-meetings="'+courseHtml(sectionMeetings)+'"><div class="course-offer-head"><input type="radio" name="courseOfferChoice" value="'+index+'" '+(selected?"checked":"")+'><strong>اختيار الشعبة دي</strong></div><div class="course-offer-scope"><span class="course-scope-pill">'+courseHtml(courseScopeTitle(bundle.scope))+'</span><span class="course-scope-pill">السكاشن المتاحة: '+courseHtml(sectionList(bundle.sections))+'</span></div><label class="course-offer-section">السكشن اللي هتحضره<select data-course-offer-section="'+index+'">'+sectionOptions+'</select></label><div class="course-offer-meetings">'+meetings+'</div></article>';
   }).join("")+'</div>';
   courseOffersRoot.querySelectorAll('input[name="courseOfferChoice"]').forEach(function(radio){
     radio.addEventListener("change",function(){
@@ -405,3 +410,4 @@ render=function(){
 };
 render();
 })();
+
