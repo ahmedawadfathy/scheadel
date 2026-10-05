@@ -244,7 +244,40 @@ byId("exportCalendar").addEventListener("click",function(){
   }catch(error){calendarStatus.textContent="المتصفح منع تنزيل الملف؛ جرّب فتح المعاينة في نافذة متصفح كاملة.";}
 });
 
-document.addEventListener("click",function(event){
+const pdfStatus=byId("pdfStatus");
+function buildPrintArea(){
+  const events=selectedEvents();
+  if(!events.length)return {error:"مفيش مواعيد محددة في جدولك عشان نحفظها."};
+  const profile="المستوى "+(levelNames[levelSelect.value]||levelSelect.value)+" · "+(catSelect.selectedOptions[0]?.textContent||"")+" · السكشن "+AR(sectionSelect.value);
+  const dayBlocks=ORDER.filter(function(day){return events.some(function(item){return item.day===day;});}).map(function(day){
+    const rows=events.filter(function(item){return item.day===day;}).map(function(item){
+      const origin=item._courseAdded?'<small class="trial-print-origin">مادة مضافة من المستوى '+html(levelNames[item.level]||item.level)+' · '+html(catLabel(item))+' · سكشن '+html(AR(item.section))+'</small>':"";
+      return "<tr><td>"+html(item.start)+" – "+html(item.end)+"</td><td><strong>"+html(details(item).title)+"</strong>"+origin+"</td><td>"+html(teacherName(item)||"المدرّس غير مذكور")+"</td><td>"+html(roomOf(item))+"</td></tr>";
+    }).join("");
+    return '<section class="trial-print-day"><h2>'+html(day)+'</h2><table class="trial-print-table"><thead><tr><th>الوقت</th><th>المادة</th><th>المدرّس</th><th>المكان</th></tr></thead><tbody>'+rows+'</tbody></table></section>';
+  }).join("");
+  const area=document.createElement("section");
+  area.id="trialPrintArea";
+  area.setAttribute("dir","rtl");
+  area.innerHTML='<header class="trial-print-header"><h1>جدولي الدراسي</h1><p>'+html(profile)+'</p><p>نسخة محفوظة بتاريخ '+html(new Date().toLocaleDateString("ar-EG"))+'</p></header>'+dayBlocks+'<footer class="trial-print-footer">نسخة من الجدول المحدد على موقع جدول حاسبات بنها.</footer>';
+  return {area:area};
+}
+byId("saveSchedulePdf").addEventListener("click",function(){
+  const result=buildPrintArea();
+  if(result.error){pdfStatus.textContent=result.error;return;}
+  const previous=byId("trialPrintArea");
+  if(previous)previous.remove();
+  document.body.appendChild(result.area);
+  document.body.classList.add("trial-print-mode");
+  pdfStatus.textContent="اختار «حفظ كـ PDF» في نافذة الطباعة لتنزيل الجدول.";
+  const finishPrint=function(){
+    document.body.classList.remove("trial-print-mode");
+    const active=byId("trialPrintArea");
+    if(active)active.remove();
+  };
+  window.addEventListener("afterprint",finishPrint,{once:true});
+  window.setTimeout(function(){window.print();},100);
+});document.addEventListener("click",function(event){
   const profileButton=event.target.closest("[data-search-profile]");
   if(profileButton){const index=Number(profileButton.dataset.searchProfile),row=DATA.events[index];if(row)showProfileFor(row,index);return;}
   const searchPlace=event.target.closest("[data-open-search-place]");
