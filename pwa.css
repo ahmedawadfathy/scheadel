@@ -1,0 +1,10 @@
+.pwa-card{display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px 18px;background:#eaf6f5;border:1px solid #b9e0da;border-radius:16px;padding:15px 19px;margin-top:15px}
+.pwa-card h2{font-size:17px;margin:0 0 5px;color:#155268}
+.pwa-card p{margin:0;color:#456777;font-size:13px;line-height:1.7}
+.pwa-card #installAppButton{grid-column:2;grid-row:1 / span 2;border:0;border-radius:12px;background:#087c74;color:#fff;min-height:44px;padding:10px 16px;font:bold 14px Tahoma,Arial,sans-serif;cursor:pointer}
+.pwa-card #installAppButton:hover{background:#06685f}
+.pwa-card #pwaStatus,.pwa-card #pwaInstallHelp{grid-column:1 / -1}
+.pwa-card #pwaStatus{font-weight:bold;color:#176c64}
+.pwa-card #pwaInstallHelp{color:#526e7a}
+.pwa-card [hidden]{display:none}
+@media(max-width:560px){.pwa-card{grid-template-columns:1fr;gap:9px;padding:14px}.pwa-card #installAppButton{grid-column:1;grid-row:auto;justify-self:start}.pwa-card #pwaStatus,.pwa-card #pwaInstallHelp{grid-column:1}}
