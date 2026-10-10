@@ -161,7 +161,7 @@ function render(){const d=todayName(),todaySupported=ORDER.includes(d);byId('tod
  const l=levelSelect.value,c=catSelect.value,s=sectionSelect.value;const label=catSelect.selectedOptions[0]?.textContent||'';byId('summary').innerHTML=`<span class="pill">المستوى ${levelNames[l]}</span><span class="pill">${escapeHtml(label)}</span><span class="pill">السكشن ${AR(s)}</span>`;
 }
 function normalizeArabic(s){return String(s).normalize('NFKC').replace(/[\u064B-\u065F\u0670\u0640]/g,'').replace(/[أإآٱ]/g,'ا').replace(/[ىيی]/g,'ي').replace(/[ة]/g,'ه').replace(/[ک]/g,'ك').replace(/[\u200e\u200f]/g,'').replace(/\s+/g,' ').trim().toLowerCase()}
-function staffInfo(e){const m=e.text.match(/\s(د|م)\/\s*(.*)$/);if(!m)return null;const tail=m[2].trim();const cut=tail.search(/\s+(?=مدرج|قاعة|معمل|اونلاين)/);return{role:m[1],name:(cut<0?tail:tail.slice(0,cut)).trim(),room:cut<0?'':tail.slice(cut).trim()}}
+function staffInfo(e){const m=e.text.match(/\s(د|م)\/\s*(.*)$/);if(!m)return null;const tail=m[2].trim();const cut=tail.search(/\s+(?=مدرج|قاع[هة]|معمل|أ?ونلاين)/);return{role:m[1],name:(cut<0?tail:tail.slice(0,cut)).trim(),room:cut<0?'':tail.slice(cut).trim()}}
 function roomOf(e){return staffInfo(e)?.room||'المكان غير محدد في الجدول'}
 function makeStaffRoster(){const roster=new Map();for(const e of DATA.events){const s=staffInfo(e);if(!s)continue;const key=`${s.role}:${normalizeArabic(s.name)}`;if(!roster.has(key))roster.set(key,{key,role:s.role,names:new Map()});const entry=roster.get(key);entry.names.set(s.name,(entry.names.get(s.name)||0)+1)}for(const entry of roster.values())entry.name=[...entry.names].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],'ar'))[0][0];return roster}
 const staffRoster=makeStaffRoster();

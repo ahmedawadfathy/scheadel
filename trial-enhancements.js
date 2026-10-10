@@ -50,7 +50,7 @@ function findVenue(room){
   const aliases={
     "hall-1":["قاعة١","room1"],"hall-2":["قاعة٢","room2"],"hall-3":["قاعة٣","room3"],"hall-4":["قاعة٤","room4"],"hall-5":["قاعة٥","room5"],"hall-6":["قاعة٦","room6"],"hall-7":["قاعة٧","room7"],"hall-8":["قاعة٨","room8"],"hall-9":["قاعة٩","room9"],"hall-10":["قاعة١٠","room10"],"hall-11":["قاعة١١","room11"],"hall-12":["قاعة١٢","room12"],
     "auditorium-1":["مدرج١","amphitheater1"],"auditorium-2":["مدرج٢","amphitheater2"],"auditorium-3":["مدرج٣","amphitheater3"],"auditorium-4":["مدرج٤","amphitheater4"],"auditorium-5":["مدرج٥","amphitheater5"],
-    "huawei":["هواوي","huawei"],"iot":["iot","انترنتالاشياء"],"microprocessor":["المعالجدقيق","microprocessor"],"physics-1":["فيزياء١","physics1"],"physics-2":["فيزياء٢","physics2"],"multimedia":["الوسائط","multimedia"],"networks":["الشبكات","networks"],"logic-1":["لوجيك١","logic1"],"logic-2":["لوجيك٢","logic2"],"electronics-1":["الكترونيات١","الالكترونيات١","تصميممنطقي١"],"electronics-2":["الكترونيات٢","الالكترونيات٢","تصميممنطقي٢"],"vr":["الواقعالافتراضي","vr"]
+    "huawei":["هواوي","huawei"],"iot":["iot","انترنتالاشياء"],"microprocessor":["المعالجدقيق","معمل المعالج","معالج","microprocessor"],"physics-1":["فيزياء١","physics1"],"physics-2":["فيزياء٢","physics2"],"multimedia":["الوسائط","multimedia"],"networks":["الشبكات","networks"],"logic-1":["لوجيك١","logic1"],"logic-2":["لوجيك٢","logic2"],"electronics-1":["الكترونيات١","الالكترونيات١","تصميممنطقي١"],"electronics-2":["الكترونيات٢","الالكترونيات٢","تصميممنطقي٢"],"vr":["الواقعالافتراضي","vr"]
   };
   let best=null,bestLength=0;
   Object.keys(VENUES).forEach(function(type){VENUES[type].forEach(function(venue){
