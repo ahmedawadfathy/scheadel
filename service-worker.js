@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_NAME = "scheadel-offline-20261010-v1";
+const CACHE_NAME = "scheadel-offline-20261010-v2";
 const APP_FILES = [
   "./",
   "./index.html",
